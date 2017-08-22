@@ -11,3 +11,5 @@
 out
 gen
 /test2
+/app
+/server/node_modules
