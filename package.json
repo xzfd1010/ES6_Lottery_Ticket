@@ -1,0 +1,19 @@
+{
+  "name": "es6_lottery_ticket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xzfd1010/ES6_Lottery_Ticket.git"
+  },
+  "author": "nick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xzfd1010/ES6_Lottery_Ticket/issues"
+  },
+  "homepage": "https://github.com/xzfd1010/ES6_Lottery_Ticket#readme"
+}
