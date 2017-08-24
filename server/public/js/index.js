@@ -86,177 +86,70 @@ __webpack_require__(2);
 "use strict";
 
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
-
 {
-    var a = void 0,
-        b = void 0,
-        rest = void 0;
-    a = 1;
-    b = 2;
+    /**
+     * 构造函数
+     * flags、sticky
+     * y修饰符、g修饰符的特点
+     * u修饰符的使用
+     * s修饰符的作用
+     */
+}
+{
+    // 构造函数
+    // ES5中的写法
+    var regex = new RegExp('xyz', 'i'); // 字符串，修饰符
+    var regex2 = new RegExp(/xyz/i); // 直接正则
 
-    console.log(a, b);
+    console.log(regex.test('xyz123'), regex2.test('xyz123'));
+
+    // ES6中构造函数
+    var regex3 = new RegExp(/xyz/ig, 'i'); // 可以是两个参数，es6中的第二个参数可以覆盖前面的正则表达式的修饰符
+    console.log(regex3.flags); // regex.flags可以获取修饰符
 }
 
 {
-    var _a = void 0,
-        _b = void 0,
-        _rest = void 0;
-    _a = 1;
-    _b = 2;
-    _rest = [3, 4, 5, 6];
+    // 都是全局匹配
+    // g修饰符从上一次匹配的位置开始寻找，进行匹配
+    // y修饰符必须从上一次匹配的第一个字符开始匹配
+    var s = 'bbb_bb_b';
+    var a1 = /b+/g;
+    var a2 = new RegExp('b+', 'y');
 
-    console.log(_a, _b, _rest);
+    console.log('one', a1.exec(s), a2.exec(s));
+    console.log('two', a1.exec(s), a2.exec(s));
+
+    // sticky查看是否开启了y匹配的方式
+    console.log(a1.sticky, a2.sticky);
 }
 
 {
-    var _a2 = void 0,
-        _b2 = void 0;
-    var _a$b = { a: 1, b: 2 };
-    _a2 = _a$b.a;
-    _b2 = _a$b.b;
+    // u修饰符 Unicode缩写，在正则处理Unicode字符时的特征值
+    console.log('u-1', /^\uD83D/.test('\uD83D\uDC2A')); // 没加的话，会把当成2个字符
+    console.log('u-2', /^(?:\uD83D(?![\uDC00-\uDFFF]))/.test('\uD83D\uDC2A')); // 加了，当成一个字符
 
-    console.log(_a2, _b2);
+    console.log(/\u{61}/.test('a'));
+    console.log(/a/.test('a')); // 如果中间是一个Unicode编码，需要添加u修饰符，进行转码
+
+    // .字符只能识别 <0xffff  如果编码超过2个字节，无法识别
+
+    console.log('\uD842\uDFB7');
+
+    var char = '𠮷';
+
+    console.log('u-1', /^.$/.test(char));
+    console.log('u-2', /^(?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])$/.test(char));
+
+    console.log('test-1', /𠮷{2}/.test('𠮷𠮷'));
+    console.log('test-2', /(?:\uD842\uDFB7){2}/.test('𠮷𠮷'));
 }
 
 {
-    var _a3 = void 0,
-        _b3 = void 0,
-        c = void 0,
-        _rest2 = void 0;
-    var _ref = [1, 2];
-    _a3 = _ref[0];
-    _b3 = _ref[1];
-    var _ref$ = _ref[2];
-    c = _ref$ === undefined ? 3 : _ref$;
+    //s修饰符
 
-    console.log(_a3, _b3, c);
-}
+    // .不能处理 换行符 回车符 行分隔符 段分隔符
 
-{
-    var _a4 = 1;
-    var _b4 = 2;
-    var _ref2 = [_b4, _a4];
-    _a4 = _ref2[0];
-    _b4 = _ref2[1];
-
-    console.log(_a4, _b4);
-}
-
-{
-    var f = function f() {
-        return [1, 2];
-    };
-
-    var _a5 = void 0,
-        _b5 = void 0;
-
-    var _f = f();
-
-    var _f2 = _slicedToArray(_f, 2);
-
-    _a5 = _f2[0];
-    _b5 = _f2[1];
-}
-
-{
-    var _f3 = function _f3() {
-        return [1, 2, 3, 4, 5];
-    };
-
-    var _a6 = void 0,
-        _b6 = void 0,
-        _c = void 0;
-
-    var _f4 = _f3();
-
-    var _f5 = _slicedToArray(_f4, 4);
-
-    _a6 = _f5[0];
-    _b6 = _f5[3];
-
-    console.log(_a6, _b6);
-}
-{
-    var _f6 = function _f6() {
-        return [1, 2, 3, 4, 5];
-    };
-
-    var _a7 = void 0,
-        _b7 = void 0,
-        _c2 = void 0;
-
-    var _f7 = _f6();
-
-    var _f8 = _toArray(_f7);
-
-    _a7 = _f8[0];
-    _b7 = _f8.slice(1);
-
-    console.log(_a7, _b7);
-}
-
-{
-    var o = { p: 42, q: true };
-    var p = o.p,
-        q = o.q;
-
-    console.log(p, q);
-}
-
-{
-    var metaData = {
-        title: 'abc',
-        test: [{
-            title: 'test',
-            desc: 'description'
-        }]
-    };
-
-    var esTitle = metaData.title,
-        _metaData$test = _slicedToArray(metaData.test, 1),
-        cnTitle = _metaData$test[0].title;
-
-    console.log(esTitle, cnTitle);
-}
-
-{
-    var node = {
-        loc: {
-            start: {
-                line: 1,
-                column: 5
-            }
-        }
-    };
-
-    var _node$loc$start = node.loc.start,
-        line = _node$loc$start.line,
-        column = _node$loc$start.column;
-}
-
-{
-    var _console = console,
-        log = _console.log;
-
-    log('a');
-}
-
-{
-    var jsonData = {
-        id: 42,
-        status: "OK",
-        data: [867, 5309]
-    };
-
-    var id = jsonData.id,
-        status = jsonData.status,
-        data = jsonData.data;
-
-
-    console.log(id, status, data);
+    // 提案
 }
 
 /***/ })
