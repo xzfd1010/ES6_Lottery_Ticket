@@ -34,7 +34,6 @@
     // sticky查看是否开启了y匹配的方式
     console.log(a1.sticky, a2.sticky);
 }
-
 {
     // u修饰符 Unicode缩写，在正则处理Unicode字符时的特征值
     console.log('u-1', /^\uD83D/.test('\uD83D\uDc2A')); // 没加的话，会把当成2个字符
@@ -44,7 +43,6 @@
     console.log(/\u{61}/u.test('a'));// 如果中间是一个Unicode编码，需要添加u修饰符，进行转码
 
     // .字符只能识别 <0xffff  如果编码超过2个字节，无法识别
-
     console.log(`\u{20BB7}`);
 
     let char = '𠮷';
