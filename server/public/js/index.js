@@ -3986,6 +3986,8 @@ __webpack_require__(126);
 
 __webpack_require__(332);
 
+__webpack_require__(333);
+
 /***/ }),
 /* 126 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -9652,8 +9654,79 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
+/*! http://mths.be/at v0.2.0 by @mathias */
+if (!String.prototype.at) {
+	(function () {
+		'use strict'; // needed to support `apply`/`call` with `undefined`/`null`
+
+		var defineProperty = function () {
+			// IE 8 only supports `Object.defineProperty` on DOM elements
+			try {
+				var object = {};
+				var $defineProperty = Object.defineProperty;
+				var result = $defineProperty(object, object, object) && $defineProperty;
+			} catch (error) {}
+			return result;
+		}();
+		var at = function at(position) {
+			if (this == null) {
+				throw TypeError();
+			}
+			var string = String(this);
+			var size = string.length;
+			// `ToInteger`
+			var index = position ? Number(position) : 0;
+			if (index != index) {
+				// better `isNaN`
+				index = 0;
+			}
+			// Account for out-of-bounds indices
+			// The odd lower bound is because the ToInteger operation is
+			// going to round `n` to `0` for `-1 < n <= 0`.
+			if (index <= -1 || index >= size) {
+				return '';
+			}
+			// Second half of `ToInteger`
+			index = index | 0;
+			// Get the first code unit and code unit value
+			var cuFirst = string.charCodeAt(index);
+			var cuSecond;
+			var nextIndex = index + 1;
+			var len = 1;
+			if ( // check if it’s the start of a surrogate pair
+			cuFirst >= 0xD800 && cuFirst <= 0xDBFF && // high surrogate
+			size > nextIndex // there is a next code unit
+			) {
+					cuSecond = string.charCodeAt(nextIndex);
+					if (cuSecond >= 0xDC00 && cuSecond <= 0xDFFF) {
+						// low surrogate
+						len = 2;
+					}
+				}
+			return string.slice(index, index + len);
+		};
+		if (defineProperty) {
+			defineProperty(String.prototype, 'at', {
+				'value': at,
+				'configurable': true,
+				'writable': true
+			});
+		} else {
+			String.prototype.at = at;
+		}
+	})();
+}
+
+/***/ }),
+/* 333 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _templateObject = _taggedTemplateLiteral(['I am ', ',', ''], ['I am ', ',', '']),
-    _templateObject2 = _taggedTemplateLiteral(['Hi\n', ''], ['Hi\\n', '']);
+    _templateObject2 = _taggedTemplateLiteral(['The total is ', ' (', ' with tax)'], ['The total is ', ' (', ' with tax)']),
+    _templateObject3 = _taggedTemplateLiteral(['Hi\n', ''], ['Hi\\n', '']);
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
@@ -9756,6 +9829,24 @@ function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defi
         return s + v1 + v2;
     };
 
+    // another demo
+
+
+    var passthru = function passthru(literals) {
+        var output = "";
+
+        for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            values[_key - 1] = arguments[_key];
+        }
+
+        for (var index = 0; index < values.length; index++) {
+            output += literals[index] + values[index];
+        }
+
+        output += literals[index];
+        return output;
+    };
+
     // 标签模板
     /**
      *  作用：
@@ -9768,12 +9859,47 @@ function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defi
         info: 'hello world'
     };
     console.log(abc(_templateObject, user.name, user.info));
+
+    var total = 30;
+    var msg = passthru(_templateObject2, total, total * 1.05);
+    console.log(msg);
 }
 
 {
     // string.raw
-    console.log(String.raw(_templateObject2, 1 + 2));
+    console.log(String.raw(_templateObject3, 1 + 2)); // String.raw API对所有的\进行了转义，使转义字符不生效
     console.log('Hi\n' + (1 + 2));
+}
+
+{
+    // at方法
+    console.log('𠮷'.at(0));
+}
+
+{
+    // normalize方法
+    console.log('O\u030C'.normalize('NFD'));
+}
+
+{
+    var compile = function compile(template) {
+        var evalExpr = /<%=(.+?)%>/g;
+        var expr = /<%([\s\S]+?)%>/g;
+
+        template = template.replace(evalExpr, '`); \n  echo( $1 ); \n  echo(`').replace(expr, '`); \n $1 \n  echo(`');
+
+        template = 'echo(`' + template + '`);';
+
+        var script = '(function parse(data){\n                var output = "";\n            \n                function echo(html){\n                  output += html;\n                }\n            \n                ' + template + '\n            \n                return output;\n              })';
+
+        return script;
+    };
+
+    var template = '\n            <ul>\n              <% for(var i=0; i < data.supplies.length; i++) { %>\n                <li><%= data.supplies[i] %></li>\n              <% } %>\n            </ul>\n            ';
+    // 上面代码在模板字符串之中，放置了一个常规模板。该模板使用<%...%>放置JavaScript代码，使用<%= ... %>输出JavaScript表达式。
+
+    var parse = eval(compile(template));
+    document.body.innerHTML = parse({ supplies: ["broom", "mop", "cleaner"] });
 }
 
 /***/ })

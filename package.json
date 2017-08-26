@@ -36,6 +36,7 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "require-dir": "^0.3.2",
+    "string.prototype.at": "^0.2.0",
     "vinyl-named": "^1.1.0",
     "webpack": "^3.5.5",
     "webpack-stream": "^4.0.0",

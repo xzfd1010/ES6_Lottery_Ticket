@@ -84,14 +84,82 @@
         info: 'hello world'
     };
     console.log(abc`I am ${user.name},${user.info}`);
-    function abc(s,v1,v2){
+
+    function abc(s, v1, v2) {
         console.log(s, v1, v2);
         return s + v1 + v2;
     }
+
+    // another demo
+    function passthru(literals, ...values) {
+        let output = "";
+        for (var index = 0; index < values.length; index++) {
+            output += literals[index] + values[index];
+        }
+
+        output += literals[index];
+        return output;
+    }
+    let total = 30;
+    let msg = passthru`The total is ${total} (${total*1.05} with tax)`;
+    console.log(msg);
+
 }
+
 
 {
     // string.raw
     console.log(String.raw`Hi\n${1 + 2}`); // String.raw API对所有的\进行了转义，使转义字符不生效
     console.log(`Hi\n${1 + 2}`);
+}
+
+{
+    // at方法
+    console.log('𠮷'.at(0));
+}
+
+{
+    // normalize方法
+    console.log('\u004F\u030C'.normalize('NFD'))
+}
+
+{
+    function compile(template) {
+        let evalExpr = /<%=(.+?)%>/g;
+        let expr = /<%([\s\S]+?)%>/g;
+
+        template = template
+            .replace(evalExpr, '`); \n  echo( $1 ); \n  echo(`')
+            .replace(expr, '`); \n $1 \n  echo(`');
+
+        template = 'echo(`' + template + '`);';
+
+        let script =
+            `(function parse(data){
+                var output = "";
+            
+                function echo(html){
+                  output += html;
+                }
+            
+                ${ template }
+            
+                return output;
+              })`;
+
+        return script;
+    }
+
+    let template = `
+            <ul>
+              <% for(var i=0; i < data.supplies.length; i++) { %>
+                <li><%= data.supplies[i] %></li>
+              <% } %>
+            </ul>
+            `;
+    // 上面代码在模板字符串之中，放置了一个常规模板。该模板使用<%...%>放置JavaScript代码，使用<%= ... %>输出JavaScript表达式。
+
+    let parse = eval(compile(template));
+    document.body.innerHTML = parse({supplies: ["broom", "mop", "cleaner"]});
+
 }
