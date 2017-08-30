@@ -1,3 +1,4 @@
+// import { map, takeWhile, forEach } from "iterlib";
 {
     // 默认值后面不能再有没有默认值的变量
     // 比如y后面不能有无默认值的c
@@ -53,13 +54,44 @@
         console.log('tail', x);
     }
 
-    function fx(x){
+    function fx(x) {
         return tail(x);
     }
 
     fx(123);
 
     // 尾调用的好处：提升性能，递归涉及到函数地址嵌套，相当耗费资源；
+}
+
+{
+    /**
+     * reduce
+     *    prev：前一个值
+     *    cur：当前值
+     *    index：索引
+     *    array：数组对象
+     */
+
+    const pipeline = (...funcs) =>
+        val => funcs.reduce((a, b) => b(a), val);
+
+    const pipeline2 = function (...funcs) {
+        return function (val) {
+            return funcs.reduce(function (a, b) {
+                return b(a);
+            }, val);
+        }
+    };
+
+    const plus1 = a => a + 1;
+    const mult2 = a => a * 2;
+    const addThenMult = pipeline2(plus1, mult2);
+
+    console.log(addThenMult(5))
+
+}
+
+{
 
 
 }

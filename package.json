@@ -16,7 +16,10 @@
     "url": "https://github.com/xzfd1010/ES6_Lottery_Ticket/issues"
   },
   "homepage": "https://github.com/xzfd1010/ES6_Lottery_Ticket#readme",
-  "dependencies": {},
+  "dependencies": {
+    "iterlib": "^1.4.0",
+    "jake": "^8.0.15"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
