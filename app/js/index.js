@@ -8,4 +8,5 @@
 // import './class/lesson5';
 // import './class/lesson6';
 // import './class/lesson7';
-import './class/lesson8';
+// import './class/lesson8';
+import './class/lesson9';

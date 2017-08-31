@@ -91,94 +91,40 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 {
-    // 简洁表示法
-    var o = 1;
-    var k = 2;
-    var es5 = {
-        o: o,
-        k: k
-    };
+    // 声明,a1和a2不可能相等
+    var a1 = Symbol();
+    var a2 = Symbol();
+    console.log(a1 === a2);
 
-    var es6 = {
-        o: o, k: k
-    };
-    console.log('es5', es5);
-    console.log('es6', es6);
-
-    // 内有方法的对象
-    var es5_method = {
-        hello: function hello() {
-            console.log('hello');
-        }
-    };
-
-    var es6_method = {
-        hello: function hello() {
-            console.log('hello');
-        }
-    };
-
-    console.log('es5_method', es5_method);
-    console.log('es6_method', es6_method);
-
-    // get set
-    var cart = {
-        _wheels: 4,
-
-        get wheels() {
-            return this._wheels;
-        },
-
-        set wheels(value) {
-            if (value < this._wheels) {
-                throw new Error('数值太小了！');
-            }
-            this._wheels = value;
-        }
-    };
-    console.log(cart.wheels);
+    // a3是key值，查看此key是否在全局注册过，如果注册过就返回这个值，如果没有，就生成
+    var a3 = Symbol.for('a3');
+    var a4 = Symbol.for('a3');
+    console.log(a3 === a4);
 }
 
 {
-    // 属性表达式
-    var a = 'b';
-    var es5_obj = {
-        a: 'c',
-        b: 'c'
-    };
+    var _obj;
 
-    // key 可以是表达式（变量）
-    var es6_obj = _defineProperty({}, a, 'c');
+    // 使用场景
+    var _a = Symbol.for('abc');
+    var obj = (_obj = {}, _defineProperty(_obj, _a, '123'), _defineProperty(_obj, 'abc', 345), _defineProperty(_obj, 'c', 456), _obj);
+    console.log('obj', obj);
 
-    console.log('es5_obj', es5_obj);
-    console.log('es6_obj', es6_obj);
-}
-
-{
-    // 新增API，is判断两个对象是否完全相等，相当于===，但能够处理NaN !== NaN的情况
-    console.log('字符串', Object.is('abc', 'abc'), 'abc' === 'abc');
-    // 数组是引用类型对象，地址不相同
-    console.log('数组', Object.is([], []), [] === []);
-
-    // Object.assign，浅拷贝
-    console.log('拷贝', Object.assign({ a: 'a' }, // 目标对象
-    { b: 'b' // 需要拷贝的值
-    }));
-
-    // entries,values支持比较差
-    var test = { k: 123, o: 456 };
+    // 如果有symbol做key值，通过for in 和let of都拿不到其属性
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
 
     try {
-        for (var _iterator = Object.entries(test)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = Object.entries(obj)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var _step$value = _slicedToArray(_step.value, 2),
                 key = _step$value[0],
                 value = _step$value[1];
 
-            console.log([key, value]);
+            console.log('let of', key, value);
         }
+
+        // 解决办法，获取用symbol作为key值的属性的对象
     } catch (err) {
         _didIteratorError = true;
         _iteratorError = err;
@@ -193,19 +139,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
         }
     }
-}
 
-{
-    var _console;
+    Object.getOwnPropertySymbols(obj).forEach(function (item) {
+        console.log(obj[item]);
+    });
 
-    // 扩展运算符
-    var _a$b$c = { a: 'test', b: 'kill', c: 'ddd' },
-        _a = _a$b$c.a,
-        b = _a$b$c.b,
-        c = _a$b$c.c;
-
-    console.log('c', c);
-    (_console = console).log.apply(_console, [1, 2, 3]);
+    // Reflect ownkeys，取到所有的key value值
+    Reflect.ownKeys(obj).forEach(function (item) {
+        console.log('ownkeys', item, obj[item]);
+    });
 }
 
 /***/ })
