@@ -265,5 +265,112 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
     console.log(weakmap.get(o));
 }
 
+{
+    // map-array，数据结构横向对比，增删改查
+    var _map2 = new Map();
+    var array = [];
+
+    // 增
+    _map2.set('t', 1);
+    array.push({ t: 1 });
+
+    console.info('map-array', _map2, array);
+
+    // 查
+    var map_exist = _map2.has('t'); // map查询，存在返回true
+    var array_exist = array.find(function (item) {
+        return item.t;
+    }); // 存在，返回值
+    console.info('map-array', map_exist, array_exist);
+
+    // 改
+    _map2.set('t', 2); //修改比较简单，set(key,value)
+    array.forEach(function (item) {
+        return item.t ? item.t = 2 : '';
+    }); // 遍历，修改值
+    console.log('map-array-modify', _map2, array);
+
+    // 删除
+    _map2.delete('t'); //map
+    var index = array.findIndex(function (item) {
+        return item.t;
+    }); //找到值的索引
+    array.splice(index, 1); //利用splice删除
+    console.info('map-array', _map2, array);
+}
+
+{
+    // set和array的对比
+    var set = new Set();
+    var _array = [];
+
+    // 增
+    set.add({ t: 1 });
+    _array.push({ t: 1 });
+    console.info('set-array', set, _array);
+
+    // 查
+    var set_exist = set.has({ t: 1 }); //也是has方法，此处是false，因为对象的引用不同，只有保存成变量才能查到
+    var _array_exist = _array.find(function (item) {
+        return item.t;
+    });
+    console.info('set-array', set_exist, _array_exist);
+
+    // 改
+    set.forEach(function (item) {
+        return item.t ? item.t = 2 : '';
+    }); //通过属性查找，存在则修改值
+    _array.forEach(function (item) {
+        return item.t ? item.t = 2 : '';
+    });
+    console.info('set-array-modify', set, _array);
+
+    // 删
+    set.forEach(function (item) {
+        return item.t ? set.delete(item) : '';
+    }); // 需要找到值，才能删除
+    var _index = _array.findIndex(function (item) {
+        return item.t;
+    }); //找到值的索引
+    _array.splice(_index, 1);
+    console.info('map-array', set, _array);
+}
+
+{
+    // map、set和obj的对比
+    var item = { t: 1 };
+    var _map3 = new Map();
+    var _set = new Set();
+    var obj = {};
+
+    // 增
+    _map3.set('t', 1);
+    _set.add(item);
+    obj['t'] = 1;
+    console.info('map-set-obj', obj, _map3, _set);
+
+    // 查，map和set语义化更好
+    console.info({
+        map_exist: _map3.has('t'),
+        set_exist: _set.has(item),
+        obj_exist: 't' in obj
+    });
+
+    // 改
+    _map3.set('t', 2);
+    item.t = 2; // 有引用修改数据本身，否则forEach查找
+    obj['t'] = 2;
+    console.info('map-set-obj-modify', obj, _map3, _set);
+
+    // 删除
+    _map3.delete('t');
+    _set.delete(item); // 无引用则需要forEach删除
+    delete obj['t'];
+    console.info('map-set-obj-empty', obj, _map3, _set);
+
+    // 能使用map，不使用数组
+    // 优先使用map，如果要保证唯一性set，
+}
+
 /***/ })
 /******/ ]);

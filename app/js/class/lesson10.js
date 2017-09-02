@@ -108,3 +108,98 @@
     console.log(weakmap.get(o));
 
 }
+
+{
+    // map-array，数据结构横向对比，增删改查
+    let map = new Map();
+    let array = [];
+
+    // 增
+    map.set('t', 1);
+    array.push({t: 1});
+
+    console.info('map-array', map, array);
+
+    // 查
+    let map_exist = map.has('t');// map查询，存在返回true
+    let array_exist = array.find(item => item.t);// 存在，返回值
+    console.info('map-array', map_exist, array_exist);
+
+    // 改
+    map.set('t', 2);//修改比较简单，set(key,value)
+    array.forEach(item => item.t ? item.t = 2 : '');// 遍历，修改值
+    console.log('map-array-modify', map, array);
+
+    // 删除
+    map.delete('t');//map
+    let index = array.findIndex(item => item.t);//找到值的索引
+    array.splice(index, 1);//利用splice删除
+    console.info('map-array', map, array);
+
+}
+
+{
+    // set和array的对比
+    let set = new Set();
+    let array = [];
+
+    // 增
+    set.add({t: 1});
+    array.push({t: 1});
+    console.info('set-array', set, array);
+
+    // 查
+    let set_exist = set.has({t: 1});//也是has方法，此处是false，因为对象的引用不同，只有保存成变量才能查到
+    let array_exist = array.find(item => item.t);
+    console.info('set-array', set_exist, array_exist);
+
+    // 改
+    set.forEach(item => item.t ? item.t = 2 : '');//通过属性查找，存在则修改值
+    array.forEach(item => item.t ? item.t = 2 : '');
+    console.info('set-array-modify', set, array);
+
+    // 删
+    set.forEach(item => item.t ? set.delete(item) : '');// 需要找到值，才能删除
+    let index = array.findIndex(item => item.t);//找到值的索引
+    array.splice(index, 1);
+    console.info('map-array', set, array);
+}
+
+{
+    // map、set和obj的对比
+    let item = {t: 1};
+    let map = new Map();
+    let set = new Set();
+    let obj = {};
+
+    // 增
+    map.set('t', 1);
+    set.add(item);
+    obj['t'] = 1;
+    console.info('map-set-obj', obj, map, set);
+
+    // 查，map和set语义化更好
+    console.info({
+        map_exist: map.has('t'),
+        set_exist: set.has(item),
+        obj_exist: 't' in obj
+    });
+
+    // 改
+    map.set('t', 2);
+    item.t = 2;// 有引用修改数据本身，否则forEach查找
+    obj['t'] = 2;
+    console.info('map-set-obj-modify', obj, map, set);
+
+    // 删除
+    map.delete('t');
+    set.delete(item);// 无引用则需要forEach删除
+    delete obj['t'];
+    console.info('map-set-obj-empty', obj, map, set);
+
+    // 能使用map，不使用数组
+    // 优先使用map，如果要保证唯一性set，
+
+}
+
+
