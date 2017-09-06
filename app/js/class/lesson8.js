@@ -91,4 +91,8 @@
     let {a, b, c} = {a: 'test', b: 'kill', c: 'ddd'};
     console.log('c', c);
     console.log(...[1, 2, 3])
+
+    // babel
+    let {x, y, ...z} = {x: 1, y: 2, a: 3, b: 4};
+    console.log('x,y,z,', x, y, z)
 }
