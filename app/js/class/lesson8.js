@@ -1,5 +1,5 @@
+// 简洁表示法 + get set
 {
-    // 简洁表示法
     let o = 1;
     let k = 2;
     let es5 = {
@@ -50,8 +50,8 @@
 
 }
 
+// 属性表达式
 {
-    // 属性表达式
     let a = 'b';
     let es5_obj = {
         a: 'c',
@@ -67,6 +67,9 @@
     console.log('es6_obj', es6_obj);
 }
 
+// Object.is
+// Object.assign
+// Object.keys,values,entries
 {
     // 新增API，is判断两个对象是否完全相等，相当于===，但能够处理NaN !== NaN的情况
     console.log('字符串', Object.is('abc', 'abc'), 'abc' === 'abc');
@@ -86,6 +89,7 @@
     }
 }
 
+// 扩展运算符
 {
     // 扩展运算符
     let {a, b, c} = {a: 'test', b: 'kill', c: 'ddd'};
