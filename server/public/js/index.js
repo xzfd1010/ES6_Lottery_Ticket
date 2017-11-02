@@ -86,135 +86,186 @@ __webpack_require__(2);
 "use strict";
 
 
-// 单步操作
+// import { map, takeWhile, forEach } from "iterlib";
 {
-    var ajax = function ajax(callback) {
-        console.log("执行1");
-        setTimeout(function () {
-            callback && callback.call(); // 经典写法
-        }, 1000);
+    // 默认值后面不能再有没有默认值的变量
+    // 比如y后面不能有无默认值的c
+    var test = function test(x) {
+        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'world';
+
+        console.log('默认值', x, y);
     };
 
-    ajax(function () {
-        console.log("timeout1");
-    });
+    test('hello');
+    test('hello', 'kill');
 }
 
 {
-    var _ajax = function _ajax() {
-        console.log("执行2");
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                resolve();
-            }, 1000);
-        });
+    var test2 = function test2(x) {
+        var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : x;
+
+        console.log('作用域', x, y);
     };
 
-    _ajax().then(function () {
-        console.log("promise", "timeout2");
-    });
-}
+    var bar = function bar() {
+        var func = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {
+            return foo;
+        };
 
-// 多步操作
-{
-    var _ajax2 = function _ajax2() {
-        console.log("执行3");
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                resolve();
-            }, 1000);
-        });
+        var foo = 'inner';
+        console.log(func());
     };
 
-    _ajax2().then(function () {
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                resolve();
-            }, 2000);
-        });
-    }).then(function () {
-        console.log("timeout3");
-    });
+    var x = 'test';
+
+    test2('kill'); //'kill'对应x，y=x现在自己的作用域中找x的值，再向上一级作用域查找
+
+    var foo = 'outer';
+
+    bar(); // outer
 }
 
-// 捕获错误catch
 {
-    var _ajax3 = function _ajax3(num) {
-        console.log("执行4");
-        return new Promise(function (resolve, reject) {
-            if (num < 5) {
-                resolve();
-            } else {
-                throw new Error("出错了");
+    //rest参数， args后面不可以再有其他参数
+    var test3 = function test3() {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+            for (var _iterator = args[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var v = _step.value;
+
+                console.log('rest', v);
             }
-        });
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return) {
+                    _iterator.return();
+                }
+            } finally {
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
     };
 
-    _ajax3(6).then(function () {
-        console.log("log", 6);
-    }).catch(function (err) {
-        console.log("catch", err);
-    });
+    test3(1, 2, 3, 4);
 }
 
-// all方法，3张图都加在完毕后再添加到页面中
 {
-    // 加载图片的函数
-    var loadImg = function loadImg(src) {
-        return new Promise(function (resolve, reject) {
-            var img = document.createElement("img");
-            img.src = src;
-            img.onload = function () {
-                resolve(img);
-            };
-            img.onerror = function (err) {
-                reject(err);
-            };
-        });
-    };
+    var _console, _console2;
 
-    var showImgs = function showImgs(imgs) {
-        imgs.forEach(function (img) {
-            document.body.appendChild(img);
-        });
-    };
-
-    // Promise.all([
-    //     loadImg("http://i4.buimg.com/567571/df1ef0720bea6832.png"),
-    //     loadImg("http://i4.buimg.com/567571/2b07ee25b08930ba.png"),
-    //     loadImg("http://i4.buimg.com/567771/5eb8190d6b2a1c9c.png")
-    // ]).then(showImgs)
-
+    // 扩展运算符
+    (_console = console).log.apply(_console, [1, 2, 3]);
+    (_console2 = console).log.apply(_console2, ['a'].concat([1, 2, 3]));
 }
 
-// race方法，3个任意完成就添加到页面中
 {
-    var _loadImg = function _loadImg(src) {
-        return new Promise(function (resolve, reject) {
-            var img = document.createElement("img");
-            img.src = src;
-            img.onload = function () {
-                resolve(img);
-            };
-            img.onerror = function (err) {
-                reject(err);
-            };
-        });
+    // 箭头函数，函数名，函数参数，函数返回值
+    var arrow = function arrow(v) {
+        return v * 2;
+    };
+    console.log('arrow', arrow(2));
+
+    var arrow2 = function arrow2() {
+        return 5;
+    };
+    console.log(arrow2());
+
+    // 箭头函数的使用根据业务场景使用
+}
+
+{
+    // 尾调用，函数式编程，函数的最后一句话是不是一句函数？
+    var tail = function tail(x) {
+        console.log('tail', x);
     };
 
-    var _showImgs = function _showImgs(img) {
-        var p = document.createElement("p");
-        p.appendChild(img);
-        document.body.appendChild(p);
-        // imgs.forEach(function (img) {
-        //     document.body.appendChild(img)
-        // })
+    var fx = function fx(x) {
+        return tail(x);
     };
 
-    // 其他两个即便加载完毕也不会触发
+    fx(123);
 
+    // 尾调用的好处：提升性能，递归涉及到函数地址嵌套，相当耗费资源；
+}
 
-    Promise.race([_loadImg("http://i4.buimg.com/567571/df1ef0720bea6832.png"), _loadImg("http://i4.buimg.com/567571/2b07ee25b08930ba.png"), _loadImg("http://i4.buimg.com/567771/5eb8190d6b2a1c9c.png")]).then(_showImgs);
+{
+    /**
+     * reduce
+     *    prev：前一个值
+     *    cur：当前值
+     *    index：索引
+     *    array：数组对象
+     */
+
+    var pipeline = function pipeline() {
+        for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            funcs[_key2] = arguments[_key2];
+        }
+
+        return function (val) {
+            return funcs.reduce(function (a, b) {
+                return b(a);
+            }, val);
+        };
+    };
+
+    var pipeline2 = function pipeline2() {
+        for (var _len3 = arguments.length, funcs = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+            funcs[_key3] = arguments[_key3];
+        }
+
+        return function (val) {
+            return funcs.reduce(function (a, b) {
+                return b(a);
+            }, val);
+        };
+    };
+
+    var plus1 = function plus1(a) {
+        return a + 1;
+    };
+    var mult2 = function mult2(a) {
+        return a * 2;
+    };
+    var addThenMult = pipeline2(plus1, mult2);
+
+    console.log(addThenMult(5));
+}
+
+{
+    var m1 = function m1() {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref$x = _ref.x,
+            x = _ref$x === undefined ? 0 : _ref$x,
+            _ref$y = _ref.y,
+            y = _ref$y === undefined ? 0 : _ref$y;
+
+        console.log([x, y]);
+    };
+
+    m1({ x: 0, y: undefined });
+}
+{
+    var m2 = function m2() {
+        var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { x: 0, y: 0 },
+            x = _ref2.x,
+            y = _ref2.y;
+
+        console.log([x, y]);
+    };
+
+    m2({ x: 0, y: undefined });
 }
 
 /***/ })

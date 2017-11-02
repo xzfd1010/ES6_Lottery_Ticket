@@ -33,18 +33,21 @@
         console.log("执行3")
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
-                resolve()
+                let value = 10
+                resolve(value)
             }, 1000)
         })
     }
 
-    ajax().then(function () {
+    ajax().then(function (value) {
+        console.log(value)
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
-                resolve()
+                resolve(value)
             }, 2000)
         })
-    }).then(function () {
+    }).then(function (value) {
+        console.log("第三步",value)
         console.log("timeout3")
     })
 }

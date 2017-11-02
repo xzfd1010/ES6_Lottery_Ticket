@@ -10,6 +10,7 @@
     test('hello', 'kill');
 
 }
+
 {
     let x = 'test';
 
@@ -18,6 +19,14 @@
     }
 
     test2('kill');//'kill'对应x，y=x现在自己的作用域中找x的值，再向上一级作用域查找
+
+    let foo = 'outer';
+    function bar(func = () => foo) {
+        let foo = 'inner';
+        console.log(func());
+    }
+    bar(); // outer
+
 }
 
 {
@@ -92,6 +101,16 @@
 }
 
 {
+    function m1({x = 0, y = 0} = {}) {
+        console.log([x, y]);
+    }
 
+    m1({x:0,y:undefined})
+}
+{
+    function m2({x, y} = {x: 0, y: 0}) {
+        console.log([x, y]);
+    }
 
+    m2({x:0,y:undefined})
 }
