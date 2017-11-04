@@ -1,1 +1,3 @@
 // generator
+
+// co-generator
