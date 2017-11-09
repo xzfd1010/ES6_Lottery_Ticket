@@ -1,3 +1,4 @@
+// set map
 {
     let list = new Set();
     list.add(5);// list中添加元素
@@ -26,10 +27,15 @@
     let arr = [1, 2, 3, 1, 2];
     let list2 = new Set(arr);
 
-    console.log('unique', list2);
+    console.log('unique', Array.from(list2));
     // 转换元素时不会进行类型转化，比如'2'和2是不同的
 }
-
+// 遍历
+{
+    // foreach遍历
+    var set = new Set([1, 4, 9]);
+    set.forEach((value, key) => console.log(key + ' : ' + value))
+}
 {
     let arr = ['add', 'delete', 'clear', 'has'];
     let list = new Set(arr);
@@ -38,6 +44,24 @@
     console.log('delete', list.delete('add'), list);
     list.clear();
     console.log(list);
+}
+// 并集、交集、差集
+{
+    let a = new Set([1, 2, 3]);
+    let b = new Set([4, 3, 2]);
+    // 并集
+    let union = new Set([...a, ...b]); // 合并 + 去重
+    console.log("并集",union)
+    // Set {1, 2, 3, 4}
+    // 交集
+    let intersect = new Set([...a].filter(x => b.has(x))); // filter只返回a、b中都包含的元素
+    console.log("交集",intersect)
+    // set {2, 3}
+    // 差集
+    let difference = new Set([...a].filter(x => !b.has(x)).concat([...b].filter(x => !a.has(x)))); // 返回b中不包含的元素
+    console.log("补集",difference)
+    // Set {1}
+
 }
 
 {
@@ -74,7 +98,7 @@
 
     console.log('weakList', weakList);
 }
-
+// map
 {
     // map定义方式1
     let map = new Map();
@@ -137,7 +161,7 @@
     console.info('map-array', map, array);
 
 }
-
+// 
 {
     // set和array的对比
     let set = new Set();
