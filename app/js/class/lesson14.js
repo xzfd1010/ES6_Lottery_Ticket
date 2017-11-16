@@ -2,11 +2,11 @@
 // 数组实现好的
 {
     let arr = ["hello", "world"]
-    let map = arr[Symbol.iterator]()
-    console.log(map)
-    console.log(map.next())
-    console.log(map.next())
-    console.log(map.next())
+    let iterator = arr[Symbol.iterator]()
+    console.log(iterator)
+    console.log(iterator.next())
+    console.log(iterator.next())
+    console.log(iterator.next())
 }
 
 // 自定义iterator
@@ -35,7 +35,7 @@
                 }
             }
         }
-    }
+    };
 
     for (let key of obj) {
         console.log(key)
@@ -48,4 +48,43 @@
     for (let value of arr) {
         console.log("value", value)
     }
+}
+
+// 字符串的iterator接口
+{
+    let str = new String("hi");
+    console.log([...str]); // ["h", "i"]
+    str[Symbol.iterator] = function () {
+        return {
+            next: function () {
+                if (this._first) {
+                    this._first = false;
+                    return {value: "bye", done: false};
+                } else {
+                    return {done: true};
+                }
+            },
+            _first: true
+        };
+    };
+    console.log([...str]); // ["bye"]
+    console.log(str); // "hi"
+
+}
+// Set和Map的for...of
+{
+    // Set结构
+    let engines = new Set(["Gecko", "Trident", "Webkit", "Webkit"]);
+    for (let e of engines) {
+        console.log(e);
+    }
+    // Map结构
+    let es6 = new Map();
+    es6.set("edition", 6);
+    es6.set("committee", "TC39");
+    es6.set("standard", "ECMA-262");
+    for (let [name, value] of es6) {
+        console.log(name + ": " + value);
+    }
+
 }
