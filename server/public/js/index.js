@@ -9652,275 +9652,167 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-// generator
-// 基本用法
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 {
-    // 函数定义 + *
-    // 内部有yield
-    var tell = /*#__PURE__*/regeneratorRuntime.mark(function tell() {
-        return regeneratorRuntime.wrap(function tell$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        _context.next = 2;
-                        return 'a';
+    // 基本定义和生成实例
+    var Parent =
+    // 构造函数
+    function Parent() {
+        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'parent';
 
-                    case 2:
-                        _context.next = 4;
-                        return 'b';
+        _classCallCheck(this, Parent);
 
-                    case 4:
-                        return _context.abrupt('return', 'c');
+        this.name = name;
+    };
 
-                    case 5:
-                    case 'end':
-                        return _context.stop();
-                }
-            }
-        }, tell, this);
-    });
-
-    var k = tell();
-
-    // 输出结果就是Iterator
-    console.log(k.next()); // 执行时会在yield时停止
-    console.log(k.next());
-    console.log(k.next());
-    console.log(k.next());
-}
-// generator和iterator的关系：使用generator作为遍历器
-{
-    var obj = {}; //原生obj没有for...of
-    // 通过generator部署iterator
-    obj[Symbol.iterator] = /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        return regeneratorRuntime.wrap(function _callee$(_context2) {
-            while (1) {
-                switch (_context2.prev = _context2.next) {
-                    case 0:
-                        _context2.next = 2;
-                        return 1;
-
-                    case 2:
-                        _context2.next = 4;
-                        return 2;
-
-                    case 4:
-                        _context2.next = 6;
-                        return 3;
-
-                    case 6:
-                    case 'end':
-                        return _context2.stop();
-                }
-            }
-        }, _callee, this);
-    });
-
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = obj[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var value = _step.value;
-
-            console.log('value', value);
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-                _iterator.return();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
-    }
+    var v_parent = new Parent('v');
+    console.log('构造函数和实例', v_parent);
 }
 
-// 状态机
-// {
-//     //a->b->c->a，3种状态
-//     let state = function* () {
-//         while (1) { // 无限循环
-//             yield 'A';
-//             yield 'B';
-//             yield 'C';
-//
-//         }
-//     };
-//     // 获取状态
-//     let status = state();
-//     console.log(status.next());
-//     console.log(status.next());
-//     console.log(status.next());
-//     console.log(status.next());
-//     console.log(status.next());
-//     console.log(status.next());
-//
-// }
-// async
-{}
-// let state = async function() {
-//     while (1) { // 无限循环
-//         await 'A';
-//         await 'B';
-//         await 'C';
-//     }
-// };
-// // 获取状态
-// let status = state();
-// console.log(status.next());
-// console.log(status.next());
-// console.log(status.next());
-// console.log(status.next());
-// console.log(status.next());
-// console.log(status.next());
-
-
-// 实例：抽奖
-// 逻辑：限制抽奖次数
-{}
-// 隔离出的纯粹的抽奖逻辑
-// let draw = function (count) {
-//     // 具体抽奖逻辑忽略
-//     // 输出剩余次数
-//     console.log(`剩余${count}次`)
-// };
-//
-// // 如何计算当前剩余次数？全局变量，无法修改；尽量少把数据存在全局对象上
-//
-// let residue = function* (count) {
-//     while (count > 0) { // 限制次数
-//         count--;
-//         //可抽奖，抽奖具体逻辑
-//         yield draw(count)
-//     }
-// };
-//
-// let star = residue(5); // generator实例化
-//
-// let btn = document.createElement('button');
-// btn.id = 'start';
-// btn.textContent = '抽奖';
-// document.body.appendChild(btn);
-// document.getElementById("start").addEventListener("click", function () {
-//     star.next() // 抽奖
-// }, false);
-
-// 长轮询
-// 实时取得服务器的某个状态
-// 之前的做法：通过setTimeout
-// 可以定义多种操作是它的优势么？
-// {
-//     let ajax = function* () {
-//         yield new Promise(function (resolve, reject) {
-//             setTimeout(function () {
-//                 resolve({code: 1});
-//             }, 200) // 200ms通信一次
-//         })
-//     };
-//
-//     let pull = function () {
-//         let generator = ajax();
-//         let step = generator.next(); // 运行第一次
-//         // step的value获得promise
-//         // promise200ms后转为resolve状态，开始执行then中的resovle方法
-//         // generator的应用时机是每隔1s就获取一个promise再次请求
-//         step.value.then(function (d) {
-//             // 如果状态没有发生改变，继续请求服务器
-//             if (d.code !== 0) {
-//                  setTimeout(function () {
-//                     console.info("wait");
-//                     pull()
-//                 }, 1000)
-//             } else {
-//             // 如果改变，执行对应操作
-//                 console.log(d);
-//             }
-//
-//         })
-//     };
-//
-//     pull();
-// }
-
-// 如果不用generator怎么写，和普通的promise调用有什么区别么？暂时没理解
-// {
-//     let ajax = function() {
-//         return new Promise(function (resolve, reject) {
-//             setTimeout(function () {
-//                 resolve({code: 0});
-//             }, 200) // 200ms通信一次
-//         })
-//     };
-//
-//     let pull = function () {
-//         let promise = ajax(); // 获取promise
-//         // step的value获得promise
-//         // promise200ms后转为resolve状态，开始执行then中的resovle方法
-//         // generator的应用时机是每隔1s就获取一个promise再次请求
-//         promise.then(function (d) {
-//             // 如果状态没有发生改变，继续请求服务器
-//             if (d.code !== 0) {
-//                 setTimeout(function () {
-//                     console.info("wait");
-//                     pull()
-//                 }, 1000)
-//             } else {
-//                 // 如果改变，执行对应操作
-//                 console.log(d);
-//             }
-//
-//         })
-//     };
-//     pull()
-// }
-
-// 斐波那契数列
+// this的指向
 {
-    var fibonacci = /*#__PURE__*/regeneratorRuntime.mark(function fibonacci() {
-        var prev, curr, _ref;
+    var Logger = function () {
+        function Logger() {
+            var _this = this;
 
-        return regeneratorRuntime.wrap(function fibonacci$(_context3) {
-            while (1) {
-                switch (_context3.prev = _context3.next) {
-                    case 0:
-                        prev = 0, curr = 1;
+            _classCallCheck(this, Logger);
 
-                    case 1:
-                        _ref = [curr, prev + curr];
-                        prev = _ref[0];
-                        curr = _ref[1];
-                        _context3.next = 6;
-                        return curr;
+            this.printName = function () {
+                var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'there';
 
-                    case 6:
-                        _context3.next = 1;
-                        break;
+                _this.print('Hello ' + name);
+            };
+        }
 
-                    case 8:
-                    case 'end':
-                        return _context3.stop();
-                }
+        // constructor() {
+        //     this.printName = this.printName.bind(this);
+        // }
+
+
+        _createClass(Logger, [{
+            key: 'print',
+            value: function print(text) {
+                console.log(text);
             }
-        }, fibonacci, this);
-    });
+        }]);
+
+        return Logger;
+    }();
+
+    var logger = new Logger();
+    var printName = logger.printName;
+    // console.log(printName)
+
+    printName(); // TypeError: Cannot read property 'print' of undefined
+}
+// class的generator方法，polyfill能运行
+{
+    var Foo = function () {
+        function Foo() {
+            _classCallCheck(this, Foo);
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+            }
+
+            this.args = args;
+        }
+
+        _createClass(Foo, [{
+            key: Symbol.iterator,
+            value: /*#__PURE__*/regeneratorRuntime.mark(function value() {
+                var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, arg;
+
+                return regeneratorRuntime.wrap(function value$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _iteratorNormalCompletion = true;
+                                _didIteratorError = false;
+                                _iteratorError = undefined;
+                                _context.prev = 3;
+                                _iterator = this.args[Symbol.iterator]();
+
+                            case 5:
+                                if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+                                    _context.next = 12;
+                                    break;
+                                }
+
+                                arg = _step.value;
+                                _context.next = 9;
+                                return arg;
+
+                            case 9:
+                                _iteratorNormalCompletion = true;
+                                _context.next = 5;
+                                break;
+
+                            case 12:
+                                _context.next = 18;
+                                break;
+
+                            case 14:
+                                _context.prev = 14;
+                                _context.t0 = _context['catch'](3);
+                                _didIteratorError = true;
+                                _iteratorError = _context.t0;
+
+                            case 18:
+                                _context.prev = 18;
+                                _context.prev = 19;
+
+                                if (!_iteratorNormalCompletion && _iterator.return) {
+                                    _iterator.return();
+                                }
+
+                            case 21:
+                                _context.prev = 21;
+
+                                if (!_didIteratorError) {
+                                    _context.next = 24;
+                                    break;
+                                }
+
+                                throw _iteratorError;
+
+                            case 24:
+                                return _context.finish(21);
+
+                            case 25:
+                                return _context.finish(18);
+
+                            case 26:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, value, this, [[3, 14, 18, 26], [19,, 21, 25]]);
+            })
+        }]);
+
+        return Foo;
+    }();
+
     var _iteratorNormalCompletion2 = true;
     var _didIteratorError2 = false;
     var _iteratorError2 = undefined;
 
     try {
 
-        for (var _iterator2 = fibonacci()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-            var n = _step2.value;
+        for (var _iterator2 = new Foo('hello', 'world')[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var x = _step2.value;
 
-            if (n > 1000) break;
-            console.log(n);
+            console.log(x);
         }
     } catch (err) {
         _didIteratorError2 = true;
@@ -9937,77 +9829,267 @@ module.exports = function (regExp, replace) {
         }
     }
 }
-
-// generator的throw方法
 {
-    var g = /*#__PURE__*/regeneratorRuntime.mark(function g() {
-        return regeneratorRuntime.wrap(function g$(_context4) {
-            while (1) {
-                switch (_context4.prev = _context4.next) {
-                    case 0:
-                        _context4.prev = 0;
-                        _context4.next = 3;
-                        return;
+    // 继承
+    var _Parent = function _Parent() {
+        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'parent';
 
-                    case 3:
-                        _context4.next = 8;
-                        break;
+        _classCallCheck(this, _Parent);
 
-                    case 5:
-                        _context4.prev = 5;
-                        _context4.t0 = _context4['catch'](0);
+        this.name = name;
+    };
 
-                        console.log('内部捕获', _context4.t0);
+    var Child = function (_Parent2) {
+        _inherits(Child, _Parent2);
 
-                    case 8:
-                    case 'end':
-                        return _context4.stop();
-                }
-            }
-        }, g, this, [[0, 5]]);
-    });
-    var i = g();
-    i.next();
-    try {
-        i.throw('a'); // 内部捕获
-        i.throw('b'); // 外部捕获
-    } catch (e) {
-        console.log('外部捕获', e);
-    }
+        function Child() {
+            _classCallCheck(this, Child);
+
+            return _possibleConstructorReturn(this, (Child.__proto__ || Object.getPrototypeOf(Child)).apply(this, arguments));
+        }
+
+        return Child;
+    }(_Parent);
+
+    console.log('继承', new Child());
 }
 
-// generator的return 方法
+{
+    // 继承传递参数
+    var _Parent3 = function _Parent3() {
+        var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'parent';
+
+        _classCallCheck(this, _Parent3);
+
+        this.name = name;
+    };
+
+    var _Child = function (_Parent4) {
+        _inherits(_Child, _Parent4);
+
+        function _Child() {
+            var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'child';
+
+            _classCallCheck(this, _Child);
+
+            // 子类向父类传参，super必须放在第一行
+            var _this3 = _possibleConstructorReturn(this, (_Child.__proto__ || Object.getPrototypeOf(_Child)).call(this, name));
+
+            _this3.type = 'child'; // 定义自己的属性，一定要放在super之后
+            return _this3;
+        }
+
+        return _Child;
+    }(_Parent3);
+
+    console.log('继承', new _Child('hello'));
+}
+
+// super作为对象调用
+{
+    var A = function () {
+        function A() {
+            _classCallCheck(this, A);
+        }
+
+        _createClass(A, [{
+            key: 'p',
+            value: function p() {
+                return 2;
+            }
+        }]);
+
+        return A;
+    }();
+
+    var B = function (_A) {
+        _inherits(B, _A);
+
+        function B() {
+            _classCallCheck(this, B);
+
+            var _this4 = _possibleConstructorReturn(this, (B.__proto__ || Object.getPrototypeOf(B)).call(this));
+
+            console.log("super指向父类原型：", _get(B.prototype.__proto__ || Object.getPrototypeOf(B.prototype), 'p', _this4).call(_this4)); // 2  此时指向父类的原型对象
+            return _this4;
+        }
+
+        return B;
+    }(A);
+
+    var b = new B();
+}
+
+// super在静态方法中使用
+{
+    var _Parent5 = function () {
+        function _Parent5() {
+            _classCallCheck(this, _Parent5);
+        }
+
+        _createClass(_Parent5, [{
+            key: 'myMethod',
+            value: function myMethod(msg) {
+                console.log('instance', msg);
+            }
+        }], [{
+            key: 'myMethod',
+            value: function myMethod(msg) {
+                console.log('static', msg);
+            }
+        }]);
+
+        return _Parent5;
+    }();
+
+    var _Child2 = function (_Parent6) {
+        _inherits(_Child2, _Parent6);
+
+        function _Child2() {
+            _classCallCheck(this, _Child2);
+
+            return _possibleConstructorReturn(this, (_Child2.__proto__ || Object.getPrototypeOf(_Child2)).apply(this, arguments));
+        }
+
+        _createClass(_Child2, [{
+            key: 'myMethod',
+            value: function myMethod(msg) {
+                // 子类覆盖父类的方法
+                _get(_Child2.prototype.__proto__ || Object.getPrototypeOf(_Child2.prototype), 'myMethod', this).call(this, msg); // super指向父类的原型对象
+            }
+        }], [{
+            key: 'myMethod',
+            value: function myMethod(msg) {
+                // 子类的静态方法
+                _get(_Child2.__proto__ || Object.getPrototypeOf(_Child2), 'myMethod', this).call(this, msg); // 调用父类的静态
+            }
+        }]);
+
+        return _Child2;
+    }(_Parent5);
+
+    _Child2.myMethod(1); // static 1
+    var child = new _Child2();
+    child.myMethod(2); // instance 2
+}
+
+// extends继承原生构造函数
+{
+    var MyArray = function (_Array) {
+        _inherits(MyArray, _Array);
+
+        function MyArray() {
+            var _ref;
+
+            _classCallCheck(this, MyArray);
+
+            for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+                args[_key2] = arguments[_key2];
+            }
+
+            return _possibleConstructorReturn(this, (_ref = MyArray.__proto__ || Object.getPrototypeOf(MyArray)).call.apply(_ref, [this].concat(args)));
+        }
+
+        return MyArray;
+    }(Array);
+
+    var arr = new MyArray();
+    arr[0] = 12;
+    console.log(arr.length); // 1
+    arr.length = 0;
+    console.log(arr[0]); // undefined
+}
 
 {
-    var gen = /*#__PURE__*/regeneratorRuntime.mark(function gen() {
-        return regeneratorRuntime.wrap(function gen$(_context5) {
-            while (1) {
-                switch (_context5.prev = _context5.next) {
-                    case 0:
-                        _context5.next = 2;
-                        return 1;
+    // getter setter
+    var _Parent7 = function () {
+        function _Parent7() {
+            var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'parent';
 
-                    case 2:
-                        _context5.next = 4;
-                        return 2;
+            _classCallCheck(this, _Parent7);
 
-                    case 4:
-                        _context5.next = 6;
-                        return 3;
+            this.name = name;
+        }
 
-                    case 6:
-                    case 'end':
-                        return _context5.stop();
-                }
+        // 是属性而非方法
+
+
+        _createClass(_Parent7, [{
+            key: 'longName',
+            get: function get() {
+                return 'name:' + this.name;
+            },
+            set: function set(value) {
+                this.name = value;
             }
-        }, gen, this);
-    });
+        }]);
+
+        return _Parent7;
+    }();
+
+    // 使用
 
 
-    var g = gen();
-    console.log(g.next()); // { value: 1, done: false }
-    console.log(g.return('foo')); // { value: "foo", done: true }
-    console.log(g.next()); // { value: undefined, done: true }
+    var v = new _Parent7();
+    console.log('getter', v.longName);
+    v.longName = 'hello'; // 赋值就是set操作
+    console.log('setter', v.longName);
+}
+
+{
+    // 静态方法
+    var _Parent8 = function () {
+        function _Parent8() {
+            var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'parent';
+
+            _classCallCheck(this, _Parent8);
+
+            this.name = name;
+        }
+
+        _createClass(_Parent8, null, [{
+            key: 'tell',
+            value: function tell() {
+                console.log('tell');
+            }
+        }]);
+
+        return _Parent8;
+    }();
+
+    // 通过类调用
+
+
+    _Parent8.tell();
+}
+
+{
+    // 静态属性
+    var _Parent9 = function () {
+        function _Parent9() {
+            var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'parent';
+
+            _classCallCheck(this, _Parent9);
+
+            this.name = name;
+        }
+
+        _createClass(_Parent9, null, [{
+            key: 'tell',
+            value: function tell() {
+                console.log('tell');
+            }
+
+            //static test = '123';错误
+
+        }]);
+
+        return _Parent9;
+    }();
+
+    _Parent9.type = 'test'; // 直接在类上定义
+
+    console.log('静态属性', _Parent9.type);
 }
 
 /***/ })

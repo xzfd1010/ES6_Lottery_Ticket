@@ -54,24 +54,6 @@
 //     console.log(status.next());
 //
 // }
-// async
-{
-    // let state = async function() {
-    //     while (1) { // 无限循环
-    //         await 'A';
-    //         await 'B';
-    //         await 'C';
-    //     }
-    // };
-    // // 获取状态
-    // let status = state();
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-    // console.log(status.next());
-}
 
 // 实例：抽奖
 // 逻辑：限制抽奖次数
@@ -225,4 +207,20 @@
     console.log(g.return('foo')) // { value: "foo", done: true }
     console.log(g.next())        // { value: undefined, done: true }
 
+}
+
+// async babel也可以执行
+{
+    function timeout(ms) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms); // resolve是函数体，可以直接放入setTimeout
+        });
+    }
+
+    async function asyncPrint(value, ms) {
+        await timeout(ms); // 返回一个promise，等待ms后promise执行完毕，再继续执行
+        console.log(value);
+    }
+
+    asyncPrint('hello world', 50);
 }
