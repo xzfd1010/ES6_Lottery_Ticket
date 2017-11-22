@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+// import 'babel-polyfill';
 // import 'string.prototype.at';
 
 // import './class/lesson1';
@@ -15,5 +15,15 @@ import 'babel-polyfill';
 // import './class/lesson12';
 // import './class/lesson13';
 // import './class/lesson14';
-import './class/lesson15';
+// import './class/lesson15';
 // import './class/lesson16';
+// import './class/lesson17';
+
+// alias
+// import * as lesson from './class/lesson17';
+//
+// console.log(lesson.A,lesson.test());
+
+// 自己起名
+import some from './class/lesson17'
+console.log(some.A);
