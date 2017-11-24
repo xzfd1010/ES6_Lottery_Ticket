@@ -1,4 +1,3 @@
-// import 'babel-polyfill';
 // import 'string.prototype.at';
 
 // import './class/lesson1';
@@ -25,5 +24,10 @@
 // console.log(lesson.A,lesson.test());
 
 // 自己起名
-import some from './class/lesson17'
-console.log(some.A);
+// import some from './class/lesson17'
+// console.log(some.A);
+
+
+// 整个彩票项目的入口文件
+import 'babel-polyfill';
+import Lottery from './lottery';
