@@ -7,7 +7,7 @@ class Timer {
     countdown(end, update, handle) {
         const now = new Date().getTime(); // 当前时间
         const self = this; //当前对象指针
-        if (now - end) {
+        if (now - end > 0) {
             handle.call(self); // 倒计时结束的回调
         } else {
             let last_time = end - now; // 剩余时间
@@ -23,11 +23,11 @@ class Timer {
             if (d > 0) {
                 r.push(`<em>${d}</em>天`);
             }
-            if (r.length || (h > 0)) { //判断数组长度是为了判断是否有天，只有有"天"的时候才继续添加小时
+            if (r.length || (h > 0)) {
                 r.push(`<em>${h}</em>时`)
             }
             if (r.length || m > 0) {
-                r.push(`<em>${s}</em>分`)
+                r.push(`<em>${m}</em>分`)
             }
             if(r.length||s>0){
                 r.push(`<em>${s}</em>秒`)

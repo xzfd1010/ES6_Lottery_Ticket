@@ -13,7 +13,7 @@ class Calculate {
         if (exist && play_name.at(0) === 'r') {
             // combine是静态方法，目的是随机填充数组中的某几项
             // arr是选中的数组，第二个的参数指的是随机的数字的个数
-            count = Calculate.combine(arr, play_name.split('')[1]);
+            count = Calculate.combine(arr, play_name.split('')[1]).length;
         }
         return count;
     }
@@ -25,8 +25,8 @@ class Calculate {
      * @return {Array}           [奖金范围]
      */
     computeBonus(active, play_name) {
-        const play = play_name.split(''); // 当前玩法的基数
         const self = this; // 当前对象指向
+        const play = play_name.split(''); // 当前玩法的基数 ['r','3']
         let arr = new Array(play[1] * 1).fill(0);
         let min, max; // 最大小值
         if (play[0] === 'r') {
@@ -34,13 +34,13 @@ class Calculate {
             if (min_active > 0) {
                 if (min_active - play[1] >= 0) {
                     arr = new Array(min_active).fill(0);
-                    min = Calculate.combine(arr, play[1]);
+                    min = Calculate.combine(arr, play[1]).length;
                 } else {
                     if (play[1] - 5 > 0 && active - play[1] >= 0) {
                         arr = new Array(active - 5).fill(0);
                         min = Calculate.combine(arr, play[1] - 5).length;
                     } else {
-                        min = active - play[1] > -1 ? 1 : 0;
+                        min = active - play[1] > 1 ? 1 : 0;
                     }
                 }
             } else {

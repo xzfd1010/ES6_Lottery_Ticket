@@ -28,9 +28,9 @@ gulp.task('scripts', () => {
                     loader: 'babel-loader'
                 }]
             }
-        }), null, (err, stats) => {
+        }), null, (err, status) => {
             // 此处用colors处理错误
-            log(`Finished '${colors.cyan('scripts')}'`, stats.toString({
+            log(`Finished '${colors.cyan('scripts')}'`, status.toString({
                 chunks: false
             }))
         })

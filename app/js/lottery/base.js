@@ -182,7 +182,7 @@ class Base {
         let active = $active ? $active.length : 0;
         let count = self.computeCount(active, self.cur_play);
         if (count) {
-            self.addCodeItem($active.join(''), self.cur_play, self.play_list.get(self.cur_play).name, count);
+            self.addCodeItem($active.join(' '), self.cur_play, self.play_list.get(self.cur_play).name, count);
         }
     }
 
@@ -214,7 +214,7 @@ class Base {
      */
     getCount() {
         let self = this;
-        let active = $('.boll-list .btn-boll-active').length;
+        let active = $('.boll-list .btn-boll-active').length; // 选中号码的个数
         let count = self.computeCount(active, self.cur_play);
         let range = self.computeBonus(active, self.cur_play);
         let money = count * 2;
@@ -224,7 +224,7 @@ class Base {
         let c1 = (win1 < 0 && win2 < 0) ? Math.abs(win1) : win1;
         let c2 = (win1 < 0 && win2 < 0) ? Math.abs(win2) : win2;
         if (count === 0) {
-            tpl = `您选了<b class="red">${count}</b> 注，共 <b class="red">${count}*2</b>元`
+            tpl = `您选了 <b class="red">${count}</b> 注，共 <b class="red">${count*2}</b>元`
         } else if (range[0] === range[1]) {
             tpl = `您选了 <b>${count}</b> 注，共 <b>${count * 2}</b> 元  <em>若中奖，奖金：
 			<strong class="red">${range[0]}</strong> 元，
@@ -238,7 +238,7 @@ class Base {
 			至 <strong class="${win2 >= 0 ? 'red' : 'green'}"> ${c2} </strong>
 			元</em>`
         }
-        $('.self_info').html(tpl);
+        $('.sel_info').html(tpl);
     }
 
     /**
@@ -247,7 +247,7 @@ class Base {
     getTotal() {
         let count = 0;
         $('.codelist li').each(function (index, item) {
-            count += $(item).attr(count) * 1;
+            count += $(item).attr('count') * 1;
         });
         $('#count').text(count);
         $('#money').text(count * 2);
@@ -281,7 +281,7 @@ class Base {
             $(self.cart_el).html('');
         } else {
             for (let i = 0; i < num; i++) {
-                sefl.addCodeItem(self.getRandom(play), self.cur_play, self.play_list.get(self.cur_play).name, 1);
+                self.addCodeItem(self.getRandom(play), self.cur_play, self.play_list.get(self.cur_play).name, 1);
             }
         }
 
