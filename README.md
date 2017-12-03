@@ -2,7 +2,7 @@
 
 ![项目演示图片](http://oph264zoo.bkt.clouddn.com/17-7-3/87703335.jpg)
 
-👉 GitHub: https://github.com/xzfd1010/lottery
+👉 GitHub: https://github.com/xzfd1010/ES6_Lottery_Ticket.git
 
 👉 项目演示地址: http://es6lottery.t.imooc.io
 
